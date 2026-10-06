@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schools &amp; Billing — Tibyaan</title>
+<meta name="description" content="Tibyaan is free for families and individual teachers. Schools and academies pay per student per year, with a 30-day free trial.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8A96E;
+    --gold-dark: #8B6914;
+    --ink: #0C0D10;
+    --cream: #F7F3EC;
+    --cream-dark: #EDE6D8;
+    --muted: #8A8778;
+    --text: #2C2A24;
+    --border: rgba(139, 105, 20, 0.15);
+    --error: #9B2C1F;
+    --ok: #3F6B2A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--gold-dark);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--cream);
+    padding: 0.75rem 1rem; z-index: 200;
+  }
+  .skip-link:focus { left: 1rem; top: 1rem; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(247, 243, 236, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+  }
+
+  .nav-brand {
+    display: flex; align-items: center; gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  .nav-logo-mark {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .nav-brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-brand-ar {
+    font-family: 'Amiri', serif;
+    font-size: 1rem;
+    color: var(--gold-dark);
+    margin-left: 0.25rem;
+  }
+
+  .nav-back {
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+    transition: color 0.2s;
+    white-space: nowrap;
+  }
+
+  .nav-back:hover { color: var(--gold-dark); }
+
+  /* HEADER */
+  .page-header {
+    padding: 10rem 4rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-label {
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+
+  .page-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--gold);
+    opacity: 0.3;
+  }
+
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-meta {
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* CONTENT */
+  .page-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem;
+  }
+
+  .page-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--muted);
+    margin-bottom: 3.5rem;
+    padding-bottom: 3.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section { margin-bottom: 3rem; }
+
+  .section h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+
+  .section-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--gold-dark);
+    opacity: 0.6;
+    min-width: 1.5rem;
+  }
+
+  .section p {
+    font-size: 0.925rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: #4A4840;
+    margin-bottom: 1rem;
+  }
+
+  .section ul {
+    margin: 0.75rem 0 1rem 1.5rem;
+    list-style: none;
+  }
+
+  .section ul li {
+    font-size: 0.925rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: #4A4840;
+    margin-bottom: 0.4rem;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .section ul li::before {
+    content: '—';
+    position: absolute;
+    left: -0.5rem;
+    color: var(--gold-dark);
+    opacity: 0.5;
+    font-size: 0.8rem;
+  }
+
+  .section a { color: var(--gold-dark); }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.3;
+    margin: 2.5rem 0;
+  }
+
+  .highlight-box {
+    background: var(--cream-dark);
+    border-left: 2px solid var(--gold);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .highlight-box p { margin-bottom: 0; font-size: 0.875rem; }
+
+  /* BANNERS */
+  .banner {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    border-left: 2px solid var(--gold);
+    background: var(--cream-dark);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.925rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .banner:focus { outline: none; }
+  .banner.ok { border-left-color: var(--ok); }
+  .banner a { color: var(--gold-dark); }
+
+  /* FORM */
+  .billing-form {
+    border: 1px solid var(--border);
+    background: rgba(237, 230, 216, 0.4);
+    padding: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .field { margin-bottom: 1.5rem; }
+
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .field .hint {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: #5E5B50;
+    line-height: 1.6;
+    margin-top: 0.4rem;
+  }
+
+  .field input {
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1px solid rgba(139, 105, 20, 0.35);
+    border-radius: 2px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .field input[aria-invalid="true"] { border-color: var(--error); }
+
+  #billing-code { text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: stretch; }
+  .row input { flex: 1 1 12rem; width: auto; min-width: 0; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.75rem;
+    padding: 0.85rem 1.75rem;
+    border: 1px solid var(--gold-dark);
+    background: transparent;
+    color: var(--gold-dark);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn:hover:not(:disabled) { background: var(--gold-dark); color: var(--cream); }
+  .btn.primary { background: var(--gold-dark); color: var(--cream); }
+  .btn.primary:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .school-confirm {
+    font-size: 0.925rem;
+    line-height: 1.7;
+    margin-top: 0.75rem;
+    color: var(--text);
+  }
+  .school-confirm strong { font-weight: 500; color: var(--ink); }
+
+  .status {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-top: 1.25rem;
+    min-height: 1.5rem;
+  }
+  .status.error { color: var(--error); }
+  .status a { color: var(--gold-dark); }
+
+  .field-error {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--error);
+    margin-top: 0.4rem;
+  }
+  .field-error:empty { display: none; }
+
+  .price-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: var(--ink) !important;
+  }
+
+  .manage {
+    margin-top: 2rem;
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #4A4840;
+  }
+  .manage a { color: var(--gold-dark); }
+
+  [hidden] { display: none !important; }
+
+  /* CONTACT BAND */
+  .contact-band {
+    background: var(--ink);
+    padding: 4rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .contact-band h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .contact-band p {
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: rgba(247, 243, 236, 0.6);
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-band a {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-band a:hover { background: var(--gold); color: var(--ink); }
+  .contact-band a:focus-visible { outline-color: var(--gold); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    border-top: 1px solid rgba(200, 169, 110, 0.1);
+    padding: 2rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  .footer-brand span {
+    font-family: 'Amiri', serif;
+    margin-left: 0.4rem;
+    opacity: 0.7;
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: rgba(247, 243, 236, 0.35);
+  }
+  .footer-copy a { color: rgba(247, 243, 236, 0.5); text-decoration: none; }
+  .footer-copy a:hover { color: var(--gold); }
+  footer a:focus-visible { outline-color: var(--gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page-header { padding: 8rem 1.5rem 3rem; }
+    .page-content { padding: 3rem 1.5rem; }
+    .contact-band { padding: 3rem 1.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 0.875rem 1rem; }
+    .nav-brand-ar { display: none; }
+    .page-header { padding: 7rem 1rem 2.5rem; }
+    .page-content { padding: 2.5rem 1rem; }
+    .billing-form { padding: 1.25rem 1rem; }
+    .contact-band { padding: 3rem 1rem; }
+    footer { padding: 1.5rem 1rem; }
+    .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#pay">Skip to payment form</a>
+
+<!-- NAV -->
+<nav aria-label="Main">
+  <a class="nav-brand" href="index.html">
+    <div class="nav-logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M10 2L12.5 7H17.5L13.5 10.5L15 15.5L10 12.5L5 15.5L6.5 10.5L2.5 7H7.5L10 2Z" stroke="#C8A96E" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="nav-brand-text">Tibyaan <span class="nav-brand-ar" lang="ar">تبيان</span></span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to Home</a>
+</nav>
+
+<!-- HEADER -->
+<header class="page-header">
+  <p class="page-label">Schools</p>
+  <h1 class="page-title">Tibyaan for Schools &amp; Academies</h1>
+  <p class="page-meta">Free for families · Simple per-student pricing for schools</p>
+</header>
+
+<!-- CONTENT -->
+<main class="page-content">
+  <div id="checkout-banner" class="banner" role="status" aria-live="polite" tabindex="-1" hidden></div>
+
+  <p class="page-intro">Tibyaan is free for families and for individual teachers. Schools and academies that run classes in Tibyaan pay a small amount per student, per year, so that the service can keep running without ads.</p>
+
+  <section class="section" aria-labelledby="h-how">
+    <h2 id="h-how"><span class="section-num" aria-hidden="true">01</span> How It Works</h2>
+    <ul>
+      <li><strong>Families and individual teachers:</strong> free, for up to 10 students.</li>
+      <li><strong>Schools and academies:</strong> pay per student, per year.</li>
+      <li><strong>30-day free trial:</strong> every new school starts with 30 days free, with no payment needed to begin.</li>
+      <li><strong>Pay by card or invoice:</strong> payments are handled securely by Stripe. We never see full card numbers.</li>
+      <li><strong>Free schools stay free:</strong> if your school or masjid class teaches without charging students, email <a href="mailto:schools@tibyaan.ai">schools@tibyaan.ai</a> and we will set you up at no cost.</li>
+      <li><strong>VAT in the EU and UK:</strong> VAT-registered schools can enter their VAT number at checkout. If your school is in the EU or UK and has no VAT number, please email <a href="mailto:schools@tibyaan.ai">schools@tibyaan.ai</a> before paying.</li>
+      <li><strong>Your data stays in your region:</strong> school data is kept in the region the school chose in the app (Europe or the United States). Paying does not move it.</li>
+    </ul>
+    <div class="highlight-box">
+      <p id="price-line" class="price-line" hidden></p>
+      <p id="price-fallback">Pricing is per student per year. The exact amount is shown at checkout before you pay, or email <a href="mailto:schools@tibyaan.ai">schools@tibyaan.ai</a> for a quote.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" id="pay" aria-labelledby="h-pay">
+    <h2 id="h-pay"><span class="section-num" aria-hidden="true">02</span> Pay for Your School</h2>
+    <p>A school administrator can find the school's billing code in the Tibyaan app, in the school's settings. It looks like <strong>EU-ABCD-1234</strong> or <strong>US-ABCD-1234</strong>.</p>
+
+    <form id="billing-form" class="billing-form" novalidate>
+      <div class="field">
+        <label for="billing-code">Billing code</label>
+        <div class="row">
+          <input id="billing-code" name="billingCode" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="EU-XXXX-XXXX" required aria-describedby="billing-code-hint billing-code-error">
+          <button type="button" id="lookup-btn" class="btn">Find school</button>
+        </div>
+        <span id="billing-code-hint" class="hint">From the Tibyaan app. The first letters (EU or US) tell us which region your school is in.</span>
+        <span id="billing-code-error" class="field-error"></span>
+        <p id="school-confirm" class="school-confirm" aria-live="polite"></p>
+      </div>
+
+      <div class="field">
+        <label for="seats">Number of students</label>
+        <input id="seats" name="seats" type="number" inputmode="numeric" min="1" max="100000" step="1" required aria-describedby="seats-hint seats-error">
+        <span id="seats-hint" class="hint">How many students you want to pay for this year. You can change this later.</span>
+        <span id="seats-error" class="field-error"></span>
+      </div>
+
+      <div class="field">
+        <label for="email">Billing email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="email-hint email-error">
+        <span id="email-hint" class="hint">Receipts and invoices are sent here.</span>
+        <span id="email-error" class="field-error"></span>
+      </div>
+
+      <button type="submit" id="checkout-btn" class="btn primary">Continue to secure payment</button>
+      <p id="form-status" class="status" role="status" aria-live="polite"></p>
+    </form>
+
+    <p class="manage">
+      Already subscribed?
+      <a id="manage-link" href="#" hidden>Manage billing</a>
+      <span id="manage-email">To change students, update your card or cancel, email <a href="mailto:schools@tibyaan.ai">schools@tibyaan.ai</a>.</span>
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section" aria-labelledby="h-privacy">
+    <h2 id="h-privacy"><span class="section-num" aria-hidden="true">03</span> Privacy</h2>
+    <p>This form sends only the billing code, number of students and billing email, to the server in your school's region and then to Stripe. We store the billing email and subscription status to manage your school's subscription. See our <a href="privacy.html">Privacy Policy</a>.</p>
+  </section>
+</main>
+
+<!-- CONTACT BAND -->
+<div class="contact-band">
+  <h2>Questions about school billing?</h2>
+  <p>We're happy to help with quotes, invoices and setup.</p>
+  <a href="mailto:schools@tibyaan.ai">schools@tibyaan.ai</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    Tibyaan <span lang="ar">تبيان</span>
+  </div>
+  <p class="footer-copy">© 2026 Tibyaan LLC · Wyoming, USA · <a href="index.html">Home</a> · <a href="privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // Set to a string such as "$X per student per year" once pricing is final.
+  var PRICE_TEXT = '$8 per active student, per year (USD).';
+  // Set to the Stripe customer portal login URL once the Stripe account exists.
+  var PORTAL_LOGIN_URL = 'https://billing.stripe.com/p/login/eVq7sKcnIfzE7bQeJqcIE00';
+
+  var CONTACT_EMAIL = 'schools@tibyaan.ai';
+  var API_BASES = {
+    EU: 'https://api-eu.tibyaan.ai/api',
+    US: 'https://api-us.tibyaan.ai/api'
+  };
+  var CODE_RE = /^(EU|US)-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+
+  var form = document.getElementById('billing-form');
+  var codeInput = document.getElementById('billing-code');
+  var seatsInput = document.getElementById('seats');
+  var emailInput = document.getElementById('email');
+  var lookupBtn = document.getElementById('lookup-btn');
+  var checkoutBtn = document.getElementById('checkout-btn');
+  var confirmEl = document.getElementById('school-confirm');
+  var statusEl = document.getElementById('form-status');
+
+  // Price line
+  if (PRICE_TEXT) {
+    var priceLine = document.getElementById('price-line');
+    priceLine.textContent = PRICE_TEXT;
+    priceLine.hidden = false;
+  }
+
+  // Manage billing link
+  if (PORTAL_LOGIN_URL) {
+    var manageLink = document.getElementById('manage-link');
+    manageLink.href = PORTAL_LOGIN_URL;
+    manageLink.hidden = false;
+    document.getElementById('manage-email').hidden = true;
+  }
+
+  // ?checkout=success|cancel banner
+  var params = new URLSearchParams(window.location.search);
+  var checkout = params.get('checkout');
+  if (checkout === 'success' || checkout === 'cancel') {
+    var banner = document.getElementById('checkout-banner');
+    if (checkout === 'success') {
+      banner.classList.add('ok');
+      banner.textContent = 'Thank you — your payment went through. Your school’s subscription will update in the app within a few minutes. A receipt is on its way to your billing email.';
+    } else {
+      banner.textContent = 'Payment was cancelled. Nothing was charged. You can try again below whenever you’re ready.';
+    }
+    banner.hidden = false;
+    banner.focus();
+  }
+
+  function normalizeCode(raw) {
+    return String(raw || '').trim().toUpperCase().replace(/\s+/g, '').replace(/[‐-―−]/g, '-');
+  }
+
+  function setFieldError(input, message) {
+    var errEl = document.getElementById(input.id + '-error');
+    errEl.textContent = message || '';
+    if (message) input.setAttribute('aria-invalid', 'true');
+    else input.removeAttribute('aria-invalid');
+  }
+
+  // Writes a message with an optional contact email link, without innerHTML.
+  function setStatus(message, isError, withEmail) {
+    statusEl.textContent = '';
+    statusEl.classList.toggle('error', !!isError);
+    if (!message) return;
+    statusEl.appendChild(document.createTextNode(message));
+    if (withEmail) {
+      statusEl.appendChild(document.createTextNode(' '));
+      var a = document.createElement('a');
+      a.href = 'mailto:' + CONTACT_EMAIL;
+      a.textContent = CONTACT_EMAIL;
+      statusEl.appendChild(a);
+      statusEl.appendChild(document.createTextNode('.'));
+    }
+  }
+
+  function validateCode() {
+    var code = normalizeCode(codeInput.value);
+    codeInput.value = code;
+    if (!code) {
+      setFieldError(codeInput, 'Enter your school’s billing code from the Tibyaan app.');
+      return null;
+    }
+    if (!CODE_RE.test(code)) {
+      setFieldError(codeInput, 'That doesn’t look like a billing code. It should look like EU-ABCD-1234 or US-ABCD-1234.');
+      return null;
+    }
+    setFieldError(codeInput, '');
+    return code;
+  }
+
+  function validateSeats() {
+    var raw = seatsInput.value.trim();
+    var n = Number(raw);
+    if (!raw || !Number.isInteger(n) || n < 1 || n > 100000) {
+      setFieldError(seatsInput, 'Enter a whole number of students (at least 1).');
+      return null;
+    }
+    setFieldError(seatsInput, '');
+    return n;
+  }
+
+  function validateEmail() {
+    var v = emailInput.value.trim();
+    emailInput.value = v;
+    if (!v || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) || v.length > 254) {
+      setFieldError(emailInput, 'Enter a valid email address for receipts.');
+      return null;
+    }
+    setFieldError(emailInput, '');
+    return v;
+  }
+
+  function apiBase(code) {
+    return API_BASES[code.slice(0, 2)];
+  }
+
+  function errorCode(body) {
+    if (!body) return '';
+    var e = body.error;
+    if (e && typeof e === 'object') return e.code || '';
+    if (typeof e === 'string') return e;
+    return body.code || '';
+  }
+
+  // Returns {ok, status, body}; throws on network failure.
+  function request(url, options) {
+    return fetch(url, options).then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (body) {
+        if (body && body.data && typeof body.data === 'object' && !Array.isArray(body.data)) body = body.data;
+        return { ok: res.ok, status: res.status, body: body };
+      });
+    });
+  }
+
+  function describeFailure(res) {
+    var code = errorCode(res.body);
+    if (res.status === 404) {
+      setFieldError(codeInput, 'We couldn’t find a school with that billing code. Check the code in the Tibyaan app and its region (EU or US).');
+      setStatus('', false);
+      codeInput.focus();
+      return;
+    }
+    if (res.status === 503 || code === 'billing_unconfigured') {
+      setStatus('Online payment opens soon. Until then, email', true, true);
+      return;
+    }
+    if (res.status === 429) {
+      setStatus('Too many attempts. Please wait a minute and try again.', true);
+      return;
+    }
+    if (res.status === 400) {
+      setStatus('Please check the details and try again. If it keeps happening, email', true, true);
+      return;
+    }
+    setStatus('Something went wrong on our side. Please try again later, or email', true, true);
+  }
+
+  function networkFailure() {
+    setStatus('We couldn’t reach the Tibyaan server. Check your internet connection and try again. If it keeps happening, email', true, true);
+  }
+
+  var lookedUp = null; // code that was last confirmed
+
+  function lookup() {
+    var code = validateCode();
+    confirmEl.textContent = '';
+    lookedUp = null;
+    if (!code) { codeInput.focus(); return Promise.resolve(null); }
+    setStatus('Looking up your school…', false);
+    lookupBtn.disabled = true;
+    return request(apiBase(code) + '/billing/lookup/' + encodeURIComponent(code), {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    }).then(function (res) {
+      if (!res.ok || !res.body) { describeFailure(res); return null; }
+      var b = res.body;
+      var name = typeof b.name === 'string' && b.name ? b.name : 'your school';
+      var used = Number.isFinite(Number(b.used)) ? Number(b.used) : null;
+      confirmEl.textContent = '';
+      confirmEl.appendChild(document.createTextNode('You’re paying for: '));
+      var strong = document.createElement('strong');
+      strong.textContent = name;
+      confirmEl.appendChild(strong);
+      if (used !== null) {
+        confirmEl.appendChild(document.createTextNode(' (' + used + (used === 1 ? ' student' : ' students') + ' now)'));
+        if (!seatsInput.value) seatsInput.value = String(Math.max(used, 1));
+      }
+      setStatus('', false);
+      lookedUp = code;
+      return code;
+    }, function () {
+      networkFailure();
+      return null;
+    }).then(function (result) {
+      lookupBtn.disabled = false;
+      return result;
+    });
+  }
+
+  lookupBtn.addEventListener('click', function () { lookup(); });
+
+  codeInput.addEventListener('input', function () {
+    if (lookedUp && normalizeCode(codeInput.value) !== lookedUp) {
+      lookedUp = null;
+      confirmEl.textContent = '';
+    }
+  });
+  codeInput.addEventListener('blur', function () {
+    var code = normalizeCode(codeInput.value);
+    if (code && CODE_RE.test(code) && code !== lookedUp) lookup();
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var code = validateCode();
+    var seats = validateSeats();
+    var email = validateEmail();
+    if (!code || !seats || !email) {
+      var firstBad = form.querySelector('[aria-invalid="true"]');
+      if (firstBad) firstBad.focus();
+      setStatus('Please fix the highlighted fields.', true);
+      return;
+    }
+
+    checkoutBtn.disabled = true;
+    var ready = lookedUp === code ? Promise.resolve(code) : lookup();
+    ready.then(function (confirmed) {
+      if (!confirmed) { checkoutBtn.disabled = false; return; }
+      setStatus('Opening secure checkout…', false);
+      return request(apiBase(code) + '/billing/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ billingCode: code, seats: seats, email: email })
+      }).then(function (res) {
+        var url = res.body && typeof res.body.url === 'string' ? res.body.url : '';
+        if (res.ok && /^https:\/\//i.test(url)) {
+          window.location.href = url;
+          return;
+        }
+        if (res.ok) {
+          setStatus('Something went wrong on our side. Please try again later, or email', true, true);
+        } else {
+          describeFailure(res);
+        }
+        checkoutBtn.disabled = false;
+      }, function () {
+        networkFailure();
+        checkoutBtn.disabled = false;
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
