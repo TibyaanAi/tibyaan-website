@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page not found — Tibyaan</title>
+<script>
+  // GitHub Pages has no dynamic routes: it serves this page for every unknown path.
+  // Khatm Circle links (https://tibyaan.ai/k/<slug>) go to the real page /k/?c=<slug>,
+  // which restores the pretty URL with history.replaceState. See README.md.
+  (function () {
+    var m = window.location.pathname.match(/^\/k\/([A-Za-z0-9-]{1,64})\/?$/);
+    if (m) window.location.replace('/k/?c=' + m[1] + window.location.hash);
+  })();
+</script>
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tibyaan">
+<meta property="og:title" content="Join a Khatm Circle">
+<meta property="og:description" content="Complete the Quran together. Pick a part to read.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --gold: #C8A96E; --gold-dark: #8B6914; --ink: #0C0D10; --cream: #F7F3EC; --text: #2C2A24; }
+  body {
+    font-family: 'Jost', sans-serif; background: var(--cream); color: var(--text);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
+  }
+  main { max-width: 520px; text-align: center; }
+  .brand { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .brand span { font-family: 'Amiri', serif; color: var(--gold-dark); margin-left: 0.25rem; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 6vw, 3rem); font-weight: 300; color: var(--ink); margin: 2rem 0 1rem; }
+  p { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: #4A4840; margin-bottom: 2rem; }
+  .btn {
+    display: inline-block; padding: 0.85rem 1.75rem; border: 1px solid var(--gold-dark); color: var(--gold-dark);
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none;
+  }
+  .btn:hover { background: var(--gold-dark); color: var(--cream); }
+  a:focus-visible { outline: 2px solid var(--gold-dark); outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="/index.html">Tibyaan <span lang="ar">تبيان</span></a>
+  <h1>Page not found</h1>
+  <p>We couldn’t find that page. If someone shared a Khatm Circle link with you, check that the whole link was copied.</p>
+  <a class="btn" href="/index.html">Go to the home page</a>
+</main>
+</body>
+</html>

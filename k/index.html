@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join a Khatm Circle — Tibyaan</title>
+<meta name="description" content="Complete the Quran together. Pick a part to read and finish it in the free Tibyaan app.">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Tibyaan">
+<meta property="og:title" content="Join a Khatm Circle">
+<meta property="og:description" content="Complete the Quran together. Pick a part to read.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C8A96E;
+    --gold-dark: #8B6914;
+    --ink: #0C0D10;
+    --cream: #F7F3EC;
+    --cream-dark: #EDE6D8;
+    --muted: #8A8778;
+    --text: #2C2A24;
+    --border: rgba(139, 105, 20, 0.15);
+    --error: #9B2C1F;
+    --taken: #E4DDCC;
+    --taken-text: #6F6A5C;
+  }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 2px solid var(--gold-dark);
+    outline-offset: 3px;
+  }
+
+  .skip-link {
+    position: absolute; left: -9999px; top: 0;
+    background: var(--ink); color: var(--cream);
+    padding: 0.75rem 1rem; z-index: 200;
+  }
+  .skip-link:focus { left: 1rem; top: 1rem; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 4rem;
+    background: rgba(247, 243, 236, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    gap: 1rem;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; }
+  .nav-logo-mark {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 1.5px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-brand-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 600; color: var(--ink); letter-spacing: 0.02em;
+  }
+  .nav-brand-ar { font-family: 'Amiri', serif; font-size: 1rem; color: var(--gold-dark); margin-left: 0.25rem; }
+  .nav-back {
+    font-size: 0.75rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none; white-space: nowrap;
+  }
+  .nav-back:hover { color: var(--gold-dark); }
+
+  /* HEADER */
+  .page-header {
+    padding: 9rem 4rem 2.5rem;
+    max-width: 720px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--border);
+  }
+  .page-label {
+    font-size: 0.7rem; font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold-dark); margin-bottom: 1.25rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .page-label::after { content: ''; flex: 1; height: 1px; background: var(--gold); opacity: 0.3; }
+  .page-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    font-weight: 400; color: var(--ink); line-height: 1.15;
+    margin-bottom: 0.75rem;
+    overflow-wrap: anywhere;
+  }
+  .page-intention {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-style: italic; font-weight: 400; line-height: 1.6;
+    color: #5E5B50; overflow-wrap: anywhere;
+  }
+  .page-meta { font-size: 0.85rem; font-weight: 400; color: #5E5B50; margin-top: 0.75rem; line-height: 1.6; }
+
+  /* CONTENT */
+  .page-content { max-width: 720px; margin: 0 auto; padding: 2.5rem 4rem 4rem; }
+
+  .status {
+    font-size: 0.95rem; line-height: 1.7; color: var(--text);
+    min-height: 1.5rem; margin-bottom: 1rem;
+  }
+  .status.error { color: var(--error); }
+  .status:empty { display: none; }
+
+  .banner {
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    border-left: 2px solid var(--gold);
+    background: var(--cream-dark);
+    border-radius: 0 4px 4px 0;
+    font-size: 0.95rem; line-height: 1.7;
+  }
+
+  /* YOURS */
+  .yours {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 1.75rem 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .yours:focus { outline: none; }
+  .yours h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem; font-weight: 600; color: var(--gold); line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+  .yours p { font-size: 0.95rem; font-weight: 300; line-height: 1.75; color: rgba(247, 243, 236, 0.85); margin-bottom: 1.25rem; }
+  .yours .small { font-size: 0.85rem; color: rgba(247, 243, 236, 0.65); margin: 1rem 0 0; }
+  .open-app {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 52px; padding: 0.85rem 1.5rem;
+    background: var(--gold); color: var(--ink);
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+    text-decoration: none; text-align: center;
+  }
+  .open-app:hover { background: var(--cream); }
+  .open-app:focus-visible, .store:focus-visible { outline-color: var(--gold); }
+  .stores-label { font-size: 0.85rem; color: rgba(247, 243, 236, 0.75); margin: 1.25rem 0 0.6rem; }
+  .stores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .store {
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    min-height: 48px; padding: 0.5rem;
+    border: 1px solid rgba(200, 169, 110, 0.5); color: var(--cream);
+    font-size: 0.8rem; font-weight: 400; letter-spacing: 0.08em; text-decoration: none;
+  }
+  .store:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* PICK */
+  .field { margin-bottom: 1.75rem; }
+  .field label {
+    display: block;
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .field .hint { display: block; font-size: 0.8rem; font-weight: 300; color: #5E5B50; line-height: 1.6; margin-top: 0.4rem; }
+  .field input {
+    width: 100%;
+    font-family: 'Jost', sans-serif; font-size: 1rem; color: var(--ink);
+    background: #FFFDF8; border: 1px solid rgba(139, 105, 20, 0.35); border-radius: 2px;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .grid-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.9rem; }
+  .grid-head h2 {
+    font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; color: var(--ink);
+  }
+  .grid-head span { font-size: 0.85rem; color: #5E5B50; white-space: nowrap; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+    gap: 6px;
+    margin-bottom: 1rem;
+  }
+  .tile {
+    aspect-ratio: 1; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Jost', sans-serif; font-size: 0.95rem; font-weight: 500;
+    border-radius: 6px; border: 0;
+  }
+  button.tile { cursor: pointer; background: #FFFDF8; color: var(--gold-dark); border: 1.5px solid var(--gold-dark); }
+  button.tile:hover { background: var(--cream-dark); }
+  button.tile[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  .tile.taken { background: var(--taken); color: var(--taken-text); }
+  .tile.done { background: var(--ink); color: var(--gold); }
+  .tile.mine { box-shadow: inset 0 0 0 2px var(--gold); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; font-size: 0.8rem; color: #5E5B50; margin-bottom: 1.75rem; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .swatch { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+  .swatch.free { border: 1.5px solid var(--gold-dark); background: #FFFDF8; }
+  .swatch.taken { background: var(--taken); }
+  .swatch.done { background: var(--ink); }
+
+  .btn {
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    min-height: 52px; padding: 0.85rem 1.75rem;
+    border: 1px solid var(--gold-dark); background: var(--gold-dark); color: var(--cream);
+    font-family: 'Jost', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+    cursor: pointer; transition: all 0.3s;
+  }
+  .btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .note { font-size: 0.85rem; font-weight: 300; line-height: 1.7; color: #5E5B50; margin-top: 1.5rem; }
+  .note a { color: var(--gold-dark); }
+
+  .visually-hidden {
+    position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  [hidden] { display: none !important; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    padding: 2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold); }
+  .footer-brand span { font-family: 'Amiri', serif; margin-left: 0.4rem; opacity: 0.7; }
+  .footer-copy { font-size: 0.75rem; color: rgba(247, 243, 236, 0.45); }
+  .footer-copy a { color: rgba(247, 243, 236, 0.6); text-decoration: none; }
+  .footer-copy a:hover { color: var(--gold); }
+  footer a:focus-visible { outline-color: var(--gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page-header { padding: 7.5rem 1.5rem 2rem; }
+    .page-content { padding: 2rem 1.5rem 3rem; }
+    footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; }
+  }
+  @media (max-width: 480px) {
+    nav { padding: 0.875rem 1rem; }
+    .nav-brand-ar { display: none; }
+    .page-header { padding: 6.5rem 1rem 1.75rem; }
+    .page-content { padding: 1.75rem 1rem 3rem; }
+    .yours { padding: 1.5rem 1rem; }
+    footer { padding: 1.5rem 1rem; }
+  }
+  @media (max-width: 340px) {
+    .nav-back { font-size: 0.65rem; letter-spacing: 0.06em; }
+    .stores { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to the circle</a>
+
+<!-- NAV -->
+<nav aria-label="Main">
+  <a class="nav-brand" href="../index.html">
+    <div class="nav-logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M10 2L12.5 7H17.5L13.5 10.5L15 15.5L10 12.5L5 15.5L6.5 10.5L2.5 7H7.5L10 2Z" stroke="#C8A96E" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="nav-brand-text">Tibyaan <span class="nav-brand-ar" lang="ar">تبيان</span></span>
+  </a>
+  <a class="nav-back" href="../index.html">About Tibyaan</a>
+</nav>
+
+<!-- HEADER -->
+<header class="page-header">
+  <p class="page-label" id="circle-label">Khatm Circle</p>
+  <h1 class="page-title" id="circle-title">Complete the Quran together</h1>
+  <p class="page-intention" id="circle-intention" hidden></p>
+  <p class="page-meta" id="circle-meta" hidden></p>
+</header>
+
+<!-- CONTENT -->
+<main class="page-content" id="main" tabindex="-1">
+  <p id="status" class="status" role="status" aria-live="polite">Loading the circle…</p>
+  <div id="finished" class="banner" hidden></div>
+
+  <section id="yours" class="yours" aria-labelledby="yours-title" tabindex="-1" hidden>
+    <h2 id="yours-title"></h2>
+    <p id="yours-text">Read it in the free Tibyaan app. It opens straight to your part, keeps your place, and lets you mark it done for the circle.</p>
+    <a id="open-app" class="open-app" href="#">Open in Tibyaan</a>
+    <p class="stores-label">Don’t have the app yet? It’s free:</p>
+    <div class="stores">
+      <a id="app-store" class="store" href="../index.html#apps">App Store</a>
+      <a id="google-play" class="store" href="../index.html#apps">Google Play</a>
+    </div>
+    <p class="small">This page remembers your part on this device. Open this link again any time to see the circle.</p>
+  </section>
+
+  <section id="pick" aria-labelledby="pick-title" hidden>
+    <div class="field" id="name-field">
+      <label for="reader-name">Your name <span style="text-transform: none; letter-spacing: 0; font-weight: 300;">(optional)</span></label>
+      <input id="reader-name" type="text" maxlength="40" autocomplete="given-name" aria-describedby="name-hint">
+      <span id="name-hint" class="hint">Shown to everyone who has this circle’s link. Leave it empty to read anonymously.</span>
+    </div>
+
+    <div class="grid-head">
+      <h2 id="pick-title">Pick a juz to read</h2>
+      <span id="free-count" aria-live="polite"></span>
+    </div>
+    <div id="grid" class="grid" role="group" aria-labelledby="pick-title"></div>
+    <div class="legend" aria-hidden="true">
+      <span><i class="swatch free"></i>free</span>
+      <span><i class="swatch taken"></i>being read</span>
+      <span><i class="swatch done"></i>read</span>
+    </div>
+    <button type="button" id="claim-btn" class="btn" disabled>Choose a free part</button>
+    <p id="claim-error" class="status error" role="alert"></p>
+  </section>
+
+  <p class="note">Khatm Circles are part of Tibyaan, a free Quran app. We don’t ask for an email address. See our <a href="../privacy.html">Privacy Policy</a>.</p>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Tibyaan <span lang="ar">تبيان</span></div>
+  <p class="footer-copy">© 2026 Tibyaan LLC · Wyoming, USA · <a href="../index.html">Home</a> · <a href="../privacy.html">Privacy</a></p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Settings ───────────────────────────────────────────────────────────
+  // TODO(store): set once the apps are live; empty = the buttons link to the home page.
+  var APP_STORE_URL = '';
+  var PLAY_STORE_URL = '';
+  var ANDROID_PACKAGE = 'ai.tibyaan.app';
+  // Region letter = first character of the circle code (mushaf-api docs/KHATM_CIRCLE_CONTRACT.md §1.2).
+  var API_BASES = {
+    E: 'https://api-eu.tibyaan.ai/api/khatm',
+    A: 'https://api-us.tibyaan.ai/api/khatm'
+  };
+  var CODE_RE = /^[0-9A-HJKMNP-TV-Z]{8}$/;
+  var STORAGE_PREFIX = 'tibyaan.khatm.';
+
+  var el = function (id) { return document.getElementById(id); };
+  var statusEl = el('status');
+  var claimBtn = el('claim-btn');
+  var nameInput = el('reader-name');
+  var claimError = el('claim-error');
+
+  // ── Which circle? /k/<slug> (via 404.html → /k/?c=<slug>) or /k/?c=<slug> ──
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('c') || '';
+  if (!slug) {
+    var m = window.location.pathname.match(/^\/k\/([A-Za-z0-9-]{1,64})\/?$/);
+    if (m) slug = m[1];
+  }
+  var code = slug.slice(slug.lastIndexOf('-') + 1).toUpperCase().replace(/O/g, '0').replace(/[IL]/g, '1');
+  var apiBase = API_BASES[code.charAt(0)];
+  // Local testing only: ?api=http://localhost:3000/api/khatm on a localhost page.
+  if (/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname) && params.get('api')) apiBase = params.get('api');
+
+  // ── Local storage (claim token for this circle) ─────────────────────────
+  function loadSaved() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_PREFIX + code);
+      var saved = raw ? JSON.parse(raw) : null;
+      return saved && typeof saved.token === 'string' && /^kc_[A-Za-z0-9_-]{43}$/.test(saved.token) ? saved : null;
+    } catch (e) { return null; }
+  }
+  function save(value) {
+    try {
+      if (value) window.localStorage.setItem(STORAGE_PREFIX + code, JSON.stringify(value));
+      else window.localStorage.removeItem(STORAGE_PREFIX + code);
+    } catch (e) { /* Private mode: the claim still works for this visit. */ }
+  }
+  var saved = loadSaved();
+
+  // ── API ─────────────────────────────────────────────────────────────────
+  function request(method, path, body) {
+    var headers = { 'Accept': 'application/json' };
+    if (body !== undefined) headers['Content-Type'] = 'application/json';
+    if (saved) headers['X-Khatm-Claim'] = saved.token;
+    return fetch(apiBase + path, {
+      method: method, headers: headers, cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer',
+      body: body === undefined ? undefined : JSON.stringify(body)
+    }).then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (data) {
+        return { ok: res.ok, status: res.status, body: data };
+      });
+    });
+  }
+  function errorCode(res) { return res && res.body && res.body.error ? res.body.error.code : ''; }
+
+  function setStatus(message, isError) {
+    statusEl.textContent = message || '';
+    statusEl.classList.toggle('error', !!isError);
+  }
+
+  // ── Rendering (textContent only) ────────────────────────────────────────
+  var circle = null;
+  var picked = 0;
+  var unit = 'Juz';
+
+  function formatDeadline(day) {
+    var date = new Date(day + 'T12:00:00');
+    if (isNaN(date.getTime())) return day;
+    var options = { day: 'numeric', month: 'long' };
+    if (date.getFullYear() !== new Date().getFullYear()) options.year = 'numeric';
+    try { return date.toLocaleDateString(undefined, options); } catch (e) { return day; }
+  }
+
+  function renderHeader(c) {
+    el('circle-label').textContent = c.organiserName ? 'Khatm Circle · organised by ' + c.organiserName : 'Khatm Circle';
+    el('circle-title').textContent = c.title;
+    document.title = c.title + ' — Khatm Circle — Tibyaan';
+    var intention = el('circle-intention');
+    intention.textContent = c.intention || '';
+    intention.hidden = !c.intention;
+    var meta = [];
+    meta.push((c.split === 'hizb' ? '60 hizb' : '30 juz') + ' · ' + c.counts.done + ' read · ' + c.counts.free + ' free');
+    if (c.deadline) meta.push('Finish by ' + formatDeadline(c.deadline));
+    if (c.round > 1) meta.push('Round ' + c.round);
+    el('circle-meta').textContent = meta.join(' · ');
+    el('circle-meta').hidden = false;
+  }
+
+  function myParts(c) { return c.you && c.you.parts ? c.you.parts : []; }
+
+  function deepLink(c) {
+    var path = 'k/' + c.slug + '?claim=' + encodeURIComponent(saved ? saved.token : '');
+    if (/Android/i.test(navigator.userAgent)) {
+      return 'intent://' + path + '#Intent;scheme=tibyaan;package=' + ANDROID_PACKAGE + ';' +
+        (PLAY_STORE_URL ? 'S.browser_fallback_url=' + encodeURIComponent(PLAY_STORE_URL) + ';' : '') + 'end';
+    }
+    return 'tibyaan://' + path;
+  }
+
+  function renderYours(c, focus) {
+    var mine = myParts(c);
+    var section = el('yours');
+    if (!mine.length || !saved) { section.hidden = true; return; }
+    var reading = mine.filter(function (p) { return p.state === 'claimed'; }).map(function (p) { return p.part; });
+    var done = mine.filter(function (p) { return p.state === 'done'; }).map(function (p) { return p.part; });
+    var title;
+    if (reading.length === 1) title = unit + ' ' + reading[0] + ' is yours';
+    else if (reading.length > 1) title = unit + ' ' + reading.join(', ') + ' are yours';
+    else title = 'You read ' + unit + ' ' + done.join(', ') + '. JazakAllahu khayran';
+    el('yours-title').textContent = title;
+    el('yours-text').hidden = !reading.length;
+    el('open-app').href = deepLink(c);
+    section.hidden = false;
+    if (focus) section.focus();
+  }
+
+  function renderGrid(c) {
+    var grid = el('grid');
+    var mineSet = {};
+    myParts(c).forEach(function (p) { mineSet[p.part] = true; });
+    var held = myParts(c).filter(function (p) { return p.state === 'claimed'; }).length;
+    var canClaim = c.status === 'active' && held < c.maxClaimsPerToken;
+    if (picked && !c.parts.some(function (p) { return p.part === picked && p.state === 'free'; })) picked = 0;
+    grid.textContent = '';
+    c.parts.forEach(function (p) {
+      var node;
+      var label = unit + ' ' + p.part;
+      if (p.state === 'free' && canClaim) {
+        node = document.createElement('button');
+        node.type = 'button';
+        node.setAttribute('aria-pressed', p.part === picked ? 'true' : 'false');
+        node.setAttribute('aria-label', label + (p.part === picked ? ', selected' : ', free'));
+        node.addEventListener('click', function () { picked = p.part; renderGrid(circle); updateClaimButton(); });
+      } else {
+        node = document.createElement('span');
+        node.setAttribute('role', 'img');
+        var who = mineSet[p.part] ? 'you' : p.name;
+        var state = p.state === 'free' ? ', free' : p.state === 'done' ? ', read' + (who ? ' by ' + who : '') : ', being read' + (who ? ' by ' + who : '');
+        node.setAttribute('aria-label', label + state);
+        if (who) node.title = who;
+      }
+      node.className = 'tile' + (p.state === 'claimed' ? ' taken' : p.state === 'done' ? ' done' : '') + (mineSet[p.part] ? ' mine' : '');
+      node.textContent = String(p.part);
+      grid.appendChild(node);
+    });
+    el('free-count').textContent = c.counts.free + ' free';
+    el('name-field').hidden = !canClaim;
+    claimBtn.hidden = !canClaim;
+    el('pick-title').textContent = canClaim ? 'Pick a ' + unit.toLowerCase() + ' to read' : 'Who is reading';
+  }
+
+  function updateClaimButton() {
+    claimBtn.disabled = !picked;
+    claimBtn.textContent = picked ? 'Take ' + unit + ' ' + picked : 'Choose a free ' + unit.toLowerCase();
+  }
+
+  function render(c, focusYours) {
+    circle = c;
+    unit = c.split === 'hizb' ? 'Hizb' : 'Juz';
+    renderHeader(c);
+    var finished = el('finished');
+    if (c.status === 'completed') finished.textContent = 'Alhamdulillah — every part of this khatm has been read. May Allah accept it from everyone who took part.';
+    else if (c.status === 'closed') finished.textContent = 'The organiser has closed this circle.';
+    finished.hidden = c.status === 'active';
+    renderYours(c, focusYours);
+    renderGrid(c);
+    updateClaimButton();
+    el('pick').hidden = false;
+    if (saved && saved.name && !nameInput.value) nameInput.value = saved.name;
+    // Pretty, shareable URL (/k/<slug>) once we know the canonical slug.
+    try {
+      if (window.history && window.location.pathname !== '/k/' + c.slug) window.history.replaceState(null, '', '/k/' + c.slug);
+    } catch (e) { /* Not fatal. */ }
+  }
+
+  // ── Loading and claiming ────────────────────────────────────────────────
+  function failure(res) {
+    var codeName = errorCode(res);
+    if (res.status === 404) return 'We couldn’t find this Khatm Circle. It may have been deleted, or the link may be incomplete.';
+    if (res.status === 429) return 'Too many requests from this network. Please wait a few minutes and try again.';
+    if (codeName === 'part_taken') return 'Someone has just taken that part. Please pick another.';
+    if (codeName === 'claim_limit') return 'You already have as many parts as this circle allows. Finish yours in the app first.';
+    if (codeName === 'circle_closed') return 'The organiser has closed this circle.';
+    if (codeName === 'circle_completed') return 'Every part of this khatm has already been read.';
+    if (codeName === 'circle_full') return 'This circle has reached its number of readers.';
+    if (codeName === 'invalid_request') return 'Please check your name and try again.';
+    return 'Something went wrong on our side. Please try again in a moment.';
+  }
+  function networkFailure() { return 'We couldn’t reach the Tibyaan server. Check your internet connection and try again.'; }
+
+  function load(focusYours) {
+    return request('GET', '/circles/' + encodeURIComponent(code)).then(function (res) {
+      if (res.status === 401 && saved) {
+        // The saved token no longer exists (forgotten or the circle was reset): start fresh.
+        saved = null; save(null);
+        return load(focusYours);
+      }
+      if (!res.ok || !res.body) { setStatus(failure(res), true); return; }
+      setStatus('');
+      render(res.body, focusYours);
+    }, function () { setStatus(networkFailure(), true); });
+  }
+
+  claimBtn.addEventListener('click', function () {
+    if (!picked || !circle) return;
+    claimError.textContent = '';
+    var name = nameInput.value.trim().slice(0, 40);
+    var body = { part: picked };
+    if (name) body.name = name;
+    claimBtn.disabled = true;
+    claimBtn.textContent = 'Taking ' + unit + ' ' + picked + '…';
+    request('POST', '/circles/' + encodeURIComponent(code) + '/claims', body).then(function (res) {
+      if (res.ok && res.body) {
+        var token = res.body.claimToken || (saved && saved.token);
+        saved = { token: token, name: name || (saved && saved.name) || '' };
+        save(saved);
+        picked = 0;
+        return load(true);
+      }
+      if (res.status === 401 && saved) { saved = null; save(null); }
+      claimError.textContent = failure(res);
+      if (errorCode(res) === 'part_taken') picked = 0;
+      return load(false);
+    }, function () {
+      claimError.textContent = networkFailure();
+      updateClaimButton();
+    });
+  });
+
+  if (!CODE_RE.test(code) || !apiBase) {
+    setStatus('This link isn’t complete. Ask the person who shared it to send it again — it looks like tibyaan.ai/k/name-ABCD2345.', true);
+    return;
+  }
+  if (APP_STORE_URL) el('app-store').href = APP_STORE_URL;
+  else el('app-store').textContent = 'App Store (coming soon)';
+  if (PLAY_STORE_URL) el('google-play').href = PLAY_STORE_URL;
+  else el('google-play').textContent = 'Google Play (coming soon)';
+  load(false);
+})();
+</script>
+</body>
+</html>

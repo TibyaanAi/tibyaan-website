@@ -1,0 +1,21 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "U7PZ665QGN.ai.tibyaan.app"
+        ],
+        "components": [
+          {
+            "/": "/k/*",
+            "comment": "Khatm Circle links"
+          }
+        ],
+        "appID": "U7PZ665QGN.ai.tibyaan.app",
+        "paths": [
+          "/k/*"
+        ]
+      }
+    ]
+  }
+}
