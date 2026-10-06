@@ -8,12 +8,17 @@
         "components": [
           {
             "/": "/k/*",
-            "comment": "Khatm Circle links"
+            "comment": "Khatm Circle and school invite links"
+          },
+          {
+            "/": "/join",
+            "comment": "Khatm Circle and school invite links"
           }
         ],
         "appID": "U7PZ665QGN.ai.tibyaan.app",
         "paths": [
-          "/k/*"
+          "/k/*",
+          "/join"
         ]
       }
     ]

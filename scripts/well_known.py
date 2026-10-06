@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BUNDLE_ID = "ai.tibyaan.app"
 ANDROID_PACKAGE = "ai.tibyaan.app"
 
-# Apple team IDs allowed to open tibyaan.ai/k/* links.
+# Apple team IDs allowed to open tibyaan.ai/k/* and /join links.
 # U7PZ665QGN = the current (personal/dev) signing identity.
 # TODO(owner): add the Tibyaan LLC team ID once Apple approves the enrollment, and remove the dev
 #              one when release builds are signed by the LLC team.
@@ -25,7 +25,7 @@ APPLE_TEAM_IDS = ["U7PZ665QGN"]
 ANDROID_SHA256_FINGERPRINTS = []
 
 # Paths the app handles.
-APP_PATHS = ["/k/*"]
+APP_PATHS = ["/k/*", "/join"]
 
 
 def apple_app_site_association():
@@ -35,7 +35,7 @@ def apple_app_site_association():
             "details": [
                 {
                     "appIDs": app_ids,
-                    "components": [{"/": path, "comment": "Khatm Circle links"} for path in APP_PATHS],
+                    "components": [{"/": path, "comment": "Khatm Circle and school invite links"} for path in APP_PATHS],
                     # Pre-iOS 13 format, same meaning.
                     "appID": app_ids[0],
                     "paths": APP_PATHS,
